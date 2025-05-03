@@ -14,13 +14,13 @@ public class ZombiesHealthSystem : MonoBehaviour
     {
         
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Sword"))
         {
             Zombiehealth -= 10f;
         }
-        if(Zombiehealth <= 0)
+        if (Zombiehealth <= 0)
         {
             Destroy(gameObject);
         }

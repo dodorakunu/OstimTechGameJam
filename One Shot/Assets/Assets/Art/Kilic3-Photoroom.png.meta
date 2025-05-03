@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 36df0f86a3f7d964cb403c7d6a847361
+guid: 91c638e8ccb5c5648aa402d8e041ae87
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1921053324792869636
-    second: gate_0
+      213: 5750540869364869730
+    second: Kilic3-Photoroom_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,40 +96,27 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gate_0
+      name: Kilic3-Photoroom_0
       rect:
         serializedVersion: 2
-        x: 77
-        y: 0
-        width: 161
-        height: 177
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 619
+        y: 890
+        width: 522
+        height: 611
+      alignment: 9
+      pivot: {x: 0.8794184, y: 0.13998148}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 403bcda12d3f8aa10800000000000000
-      internalID: 1921053324792869636
+      spriteID: 26aebd8f3760ecf40800000000000000
+      internalID: 5750540869364869730
       vertices: []
       indices: 
       edges: []
@@ -138,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 4e4e3f3d0b95c0d4e9dc4bac6fb1e9ed
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      gate_0: 1921053324792869636
+      Kilic3-Photoroom_0: 5750540869364869730
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
