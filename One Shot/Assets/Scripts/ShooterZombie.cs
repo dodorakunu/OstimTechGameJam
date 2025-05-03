@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class ShooterZombie : MonoBehaviour
 {
@@ -10,84 +9,85 @@ public class ShooterZombie : MonoBehaviour
     public float shootInterval = 2f;
     private float shootTimer;
     public float ARROWzombieSpeed = 10f;
-    public int a = 0;
+    public float escapeSpeed = 2f;
+
+    private Rigidbody2D rb;
+    private bool isEscaping = false;
+    private int a = 0;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     void Update()
     {
-        Vector2 direction = (player.position - transform.position).normalized;
-        transform.position += (Vector3)(direction * ARROWzombieSpeed * Time.deltaTime);
-
         if (player == null) return;
-        firePoint.position = player.position;
 
-        Vector2 dirToPlayer = (player.position - transform.position).normalized;
-        float angleToPlayer = Mathf.Atan2(dirToPlayer.y, dirToPlayer.x) * Mathf.Rad2Deg;
+        Vector2 directionToPlayer = (player.position - transform.position).normalized;
+        float distance = Vector2.Distance(transform.position, player.position);
+
+        // ROTATION
+        float angleToPlayer = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angleToPlayer + 90f);
+
+        // MOVEMENT
+        if (!isEscaping)
+        {
+            if (distance > 15f)
+            {
+                // Oyuncuya yaklaş
+                rb.linearVelocity = directionToPlayer * ARROWzombieSpeed;
+            }
+            else if (distance < 10f)
+            {
+                // Oyuncudan uzaklaş (kaçma modu)
+                Vector2 escapeDir = -directionToPlayer;
+                rb.linearVelocity = escapeDir * escapeSpeed;
+                isEscaping = true;
+
+                // Kaçma modunu bir süre sonra kapat
+                StartCoroutine(StopEscape());
+            }
+            else
+            {
+                // Mesafe aralıkta, dur
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+
+        // ATEŞ
+        Shoot();
     }
 
     void Shoot()
     {
         if (a == 0)
         {
-            Vector2 direction = (firePoint.position - transform.position).normalized;
+            Vector2 direction = (player.position - transform.position).normalized;
             Quaternion rotation = transform.rotation;
+
             GameObject projectile = Instantiate(projectilePrefab, transform.position, rotation);
-
-            Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            Rigidbody2D rbProjectile = projectile.GetComponent<Rigidbody2D>();
+            if (rbProjectile != null)
             {
-                rb.linearVelocity = direction * 10f; // H�z burada ayarlan�yor
+                rbProjectile.linearVelocity = direction * 10f;
             }
-            StartCoroutine(wait());
+
             a++;
-        }
-        
-    
-    }
-
-    public float escapeSpeed = 2f;
-    private Rigidbody2D rb;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        Vector2 dirToPlayer1 = (player.position - transform.position).normalized;
-
-        if (collision.CompareTag("Player"))
-        {
-            // Mermiyi fırlat
-            
-
-            // Oyuncu çok yakınsa kaç
-            float distance = Vector2.Distance(transform.position, player.position);
-            if (distance <= 5f)
-            {
-                Debug.Log("Çok yakın! Kaçıyorum!");
-
-                // Tam tersi yöne dön
-                Vector2 oppositeDir = -dirToPlayer1;
-                float escapeAngle = Mathf.Atan2(oppositeDir.y, oppositeDir.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0, 0, escapeAngle+90);
-
-                // Hareket etmeye başla
-                rb.linearVelocity = oppositeDir * escapeSpeed;
-            }
-            else{
-                Vector2 direction = (player.position - transform.position).normalized;
-                transform.position += (Vector3)(direction * ARROWzombieSpeed * Time.deltaTime);
-            }
-            Shoot();
-            
-            
-
+            StartCoroutine(ResetShoot());
         }
     }
-    IEnumerator wait()
+
+    IEnumerator ResetShoot()
     {
-        yield return new WaitForSeconds(2f);
-        a--;
+        yield return new WaitForSeconds(shootInterval);
+        a = 0;
     }
 
+    IEnumerator StopEscape()
+    {
+        yield return new WaitForSeconds(1f); // 1 saniye kaçtıktan sonra normal moda dön
+        isEscaping = false;
+    }
 }
