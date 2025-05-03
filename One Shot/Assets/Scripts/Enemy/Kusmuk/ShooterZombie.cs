@@ -10,7 +10,7 @@ public class ShooterZombie : MonoBehaviour
     private float shootTimer;
     public float ARROWzombieSpeed = 10f;
     public float escapeSpeed = 2f;
-    private ZombiesHealthSystem ZombiesHealthSystem;
+    private ZombiesHealthSystem zombiesHealthSystem;
 
     private Rigidbody2D rb;
     private bool isEscaping = false;
@@ -18,8 +18,8 @@ public class ShooterZombie : MonoBehaviour
 
     void Start()
     {
-        ZombiesHealthSystem = GetComponent<ZombiesHealthSystem>();
-        ZombiesHealthSystem.Zombiehealth = 200f;
+        zombiesHealthSystem = GetComponent<ZombiesHealthSystem>();
+        zombiesHealthSystem.Zombiehealth = 200f; //zombie canı  
         rb = GetComponent<Rigidbody2D>();
     }
 

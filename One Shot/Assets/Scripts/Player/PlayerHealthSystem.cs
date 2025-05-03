@@ -8,6 +8,7 @@ public class PlayerHealthSystem : MonoBehaviour
     public float damageMult = 1;
     public bool posioned = false;
     public float stamina = 100f;
+    public GameObject DeadScene;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,15 +25,15 @@ public class PlayerHealthSystem : MonoBehaviour
         {
             currentTime -= Time.deltaTime * damageMult;
         }
-        else
-        {
-            currentTime = maxTime;
-        }
-
-
         if (currentTime <= 0f)
         {
             Die();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space)) //potion sistemi için tuþ 
+        {
+            posioned = false;
+            currentTime = maxTime + (damageMult * 2);
         }
     }
 
@@ -40,6 +41,9 @@ public class PlayerHealthSystem : MonoBehaviour
     {
         isDead = true;
         Debug.Log("Zaman doldu! Oyuncu öldü.");
+        Destroy(gameObject);
+        DeadScene.SetActive(true);
+        
         // Buraya ölüm animasyonu, sahne geçiþi vs. ekleyebilirsin.
     }
 

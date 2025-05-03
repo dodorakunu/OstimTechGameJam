@@ -17,15 +17,20 @@ public class DefaultZombie : MonoBehaviour
     void Start()
     {
         ZombiesHealthSystem = GetComponent<ZombiesHealthSystem>();
-        ZombiesHealthSystem.Zombiehealth = 100f; //zombinin caný baþta belirlenir.
+        ZombiesHealthSystem.Zombiehealth = 100f;
+
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
+            player = playerObj;
             playerTransform = playerObj.transform;
+            playerController = player.GetComponent<PlayerController>();
+            zombieSpeed = 3.5f;
         }
-
-        playerController = player.GetComponent<PlayerController>();
-        zombieSpeed = playerController.moveSpeed * 0.8f;
+        else
+        {
+            Debug.LogError("Player tag'ine sahip obje bulunamadý!");
+        }
     }
 
     void Update()

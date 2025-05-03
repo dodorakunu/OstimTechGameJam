@@ -3,10 +3,11 @@ using UnityEngine;
 public class BomberZombieDamage : MonoBehaviour
 {
     public GameObject projectilePrefab;
-    public float zombieHealth = 100f;
+    private ZombiesHealthSystem zombieshealthSystem;
     void Start()
     {
-        
+        zombieshealthSystem = GetComponent<ZombiesHealthSystem>();
+        zombieshealthSystem.Zombiehealth = 100f; //zombie caný
     }
 
     
