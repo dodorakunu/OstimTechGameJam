@@ -5,12 +5,14 @@ public class DefaultZombie : MonoBehaviour
     public float zombieHealth = 100f;
     public float zombieDamage = 10f;
     public float zombieSpeed;
+    public float turnSpeed = 180f; // Saniyede dönebileceði maksimum derece
+
     public GameObject player;
 
     private Transform playerTransform;
 
     public PlayerController playerController;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -23,22 +25,28 @@ public class DefaultZombie : MonoBehaviour
         zombieSpeed = playerController.moveSpeed * 0.8f;
     }
 
-    // Update is called once per framey
     void Update()
     {
         if (player != null)
         {
-            // Hedef yöne doðru ilerle
+            // Oyuncuya doðru ilerle
             Vector2 direction = (playerTransform.position - transform.position).normalized;
             transform.position += (Vector3)(direction * zombieSpeed * Time.deltaTime);
-        }
-        
 
+            // Oyuncuya yavaþça dön
+            Vector2 dirToPlayer = direction;
+            float angleToPlayer = Mathf.Atan2(dirToPlayer.y, dirToPlayer.x) * Mathf.Rad2Deg;
+
+            // Sprite'ýn yüzü yukarý bakýyorsa -90 veya +90 ekle (burada +90 kullanýlmýþ)
+            Quaternion targetRotation = Quaternion.Euler(0, 0, angleToPlayer + 90f);
+
+            // Mevcut rotasyondan hedef rotasyona doðru sýnýrlý dönüþ yap
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerHealthSystem playerHealthSystem = collision.gameObject.GetComponent<PlayerHealthSystem>();
@@ -46,5 +54,4 @@ public class DefaultZombie : MonoBehaviour
             playerHealthSystem.SubtractTime(zombieDamage);
         }
     }
-
 }
