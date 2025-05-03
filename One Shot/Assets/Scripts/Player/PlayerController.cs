@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     public Animator anim;
     void Start()
     {
+        
+
+
         anim = capsule.GetComponent<Animator>();
 
 
@@ -25,6 +28,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        RotateToMouse();
+
         if (Input.GetKeyDown(KeyCode.U)) // Sað týk
         {
             anim.SetTrigger("attack");
@@ -39,6 +45,20 @@ public class PlayerController : MonoBehaviour
         {
             playerHealthSystem.stamina = 0;
         }
+    }
+
+
+    void RotateToMouse()
+    {
+        // Mouse pozisyonunu dünya koordinatýna çevir
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mousePos - transform.position).normalized;
+
+        // Açý hesapla
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Sprite yukarýya bakýyorsa +90 veya -90 derecelik düzeltme gerekebilir
+        transform.rotation = Quaternion.Euler(0f, 0f, angle + 90f);
     }
 
     void FixedUpdate()
