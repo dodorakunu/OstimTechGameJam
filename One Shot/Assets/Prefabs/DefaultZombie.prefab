@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8810598444727331989}
   - component: {fileID: 5804200597572160808}
   m_Layer: 0
-  m_Name: Zombie-Photoroom_0
+  m_Name: DefaultZombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
