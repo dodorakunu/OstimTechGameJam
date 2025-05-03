@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 movement;
     public PlayerHealthSystem playerHealthSystem;
 
+    public GameObject collier;
+    
 
     public GameObject capsule;
     public Animator anim;
@@ -19,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
 
         anim = capsule.GetComponent<Animator>();
-
+        
 
        playerHealthSystem = GetComponent<PlayerHealthSystem>();
     rb = GetComponent<Rigidbody2D>();
@@ -34,10 +36,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U)) // Sað týk
         {
             anim.SetTrigger("attack");
+            collier.SetActive(true);
+            StartCoroutine(wait());
         }
-        else{
-            
-        }
+       
 
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
@@ -89,5 +91,9 @@ public class PlayerController : MonoBehaviour
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
-   
+   IEnumerator wait()
+    {
+        yield return new WaitForSeconds(1.28f);
+        collier.SetActive(false);
+    }
 }
