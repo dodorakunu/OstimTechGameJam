@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,8 +9,15 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movement;
     public PlayerHealthSystem playerHealthSystem;
+
+
+    public GameObject capsule;
+    public Animator anim;
     void Start()
     {
+        anim = capsule.GetComponent<Animator>();
+
+
        playerHealthSystem = GetComponent<PlayerHealthSystem>();
     rb = GetComponent<Rigidbody2D>();
 }
@@ -16,6 +25,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.U)) // Sað týk
+        {
+            anim.SetTrigger("attack");
+        }
+        else{
+            
+        }
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         if(playerHealthSystem.stamina < 0)
@@ -51,4 +68,6 @@ public class PlayerController : MonoBehaviour
         // Hareket ettirme
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
+
+   
 }
