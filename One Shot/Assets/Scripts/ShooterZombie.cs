@@ -10,6 +10,7 @@ public class ShooterZombie : MonoBehaviour
     private float shootTimer;
     public float ARROWzombieSpeed = 10f;
     public float escapeSpeed = 2f;
+    private ZombiesHealthSystem ZombiesHealthSystem;
 
     private Rigidbody2D rb;
     private bool isEscaping = false;
@@ -17,6 +18,8 @@ public class ShooterZombie : MonoBehaviour
 
     void Start()
     {
+        ZombiesHealthSystem = GetComponent<ZombiesHealthSystem>();
+        ZombiesHealthSystem.Zombiehealth = 200f;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -68,6 +71,10 @@ public class ShooterZombie : MonoBehaviour
             Quaternion rotation = transform.rotation;
 
             GameObject projectile = Instantiate(projectilePrefab, transform.position, rotation);
+
+            
+
+
             Rigidbody2D rbProjectile = projectile.GetComponent<Rigidbody2D>();
             if (rbProjectile != null)
             {

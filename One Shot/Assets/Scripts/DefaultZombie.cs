@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class DefaultZombie : MonoBehaviour
 {
-    public float zombieHealth = 100f;
+   
     public float zombieDamage = 10f;
     public float zombieSpeed;
     public float turnSpeed = 180f; // Saniyede dönebileceði maksimum derece
+    public ZombiesHealthSystem ZombiesHealthSystem;
 
     public GameObject player;
 
@@ -15,6 +16,8 @@ public class DefaultZombie : MonoBehaviour
 
     void Start()
     {
+        ZombiesHealthSystem = GetComponent<ZombiesHealthSystem>();
+        ZombiesHealthSystem.Zombiehealth = 100f; //zombinin caný baþta belirlenir.
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
