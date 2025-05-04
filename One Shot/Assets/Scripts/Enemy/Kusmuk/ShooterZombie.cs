@@ -3,24 +3,32 @@ using UnityEngine;
 
 public class ShooterZombie : MonoBehaviour
 {
-    public Transform player;
     public GameObject projectilePrefab;
     public Transform firePoint;
     public float shootInterval = 2f;
     private float shootTimer;
-    public float ARROWzombieSpeed = 10f;
-    public float escapeSpeed = 2f;
-    private ZombiesHealthSystem zombiesHealthSystem;
 
+    public float moveSpeed = 2f;         // Oyuncuya yaklaşma hızı
+    public float escapeSpeed = 2f;       // Oyuncudan kaçma hızı
+    public float maxChaseDistance = 15f;
+    public float minEscapeDistance = 10f;
+
+    private Transform player;
+    private ZombiesHealthSystem zombiesHealthSystem;
     private Rigidbody2D rb;
+
     private bool isEscaping = false;
-    private int a = 0;
+    private bool canShoot = true;
 
     void Start()
     {
         zombiesHealthSystem = GetComponent<ZombiesHealthSystem>();
-        zombiesHealthSystem.Zombiehealth = 200f; //zombie canı  
+        zombiesHealthSystem.Zombiehealth = 200f;
         rb = GetComponent<Rigidbody2D>();
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+            player = playerObj.transform;
     }
 
     void Update()
@@ -30,71 +38,66 @@ public class ShooterZombie : MonoBehaviour
         Vector2 directionToPlayer = (player.position - transform.position).normalized;
         float distance = Vector2.Distance(transform.position, player.position);
 
-        // ROTATION
+        // ROTATE TO FACE PLAYER
         float angleToPlayer = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angleToPlayer + 90f);
 
-        // MOVEMENT
+        // MOVE
         if (!isEscaping)
         {
-            if (distance > 15f)
+            if (distance > maxChaseDistance)
             {
                 // Oyuncuya yaklaş
-                rb.linearVelocity = directionToPlayer * ARROWzombieSpeed;
+                rb.linearVelocity = directionToPlayer * moveSpeed;
             }
-            else if (distance < 10f)
+            else if (distance < minEscapeDistance)
             {
-                // Oyuncudan uzaklaş (kaçma modu)
-                Vector2 escapeDir = -directionToPlayer;
-                rb.linearVelocity = escapeDir * escapeSpeed;
+                // Oyuncudan kaç
+                rb.linearVelocity = -directionToPlayer * escapeSpeed;
                 isEscaping = true;
-
-                // Kaçma modunu bir süre sonra kapat
                 StartCoroutine(StopEscape());
             }
             else
             {
-                // Mesafe aralıkta, dur
+                // Dur
                 rb.linearVelocity = Vector2.zero;
             }
         }
 
-        // ATEŞ
-        Shoot();
+        // SHOOT
+        if (canShoot)
+        {
+            Shoot();
+        }
     }
 
     void Shoot()
     {
-        if (a == 0)
+        canShoot = false;
+
+        Vector2 direction = (player.position - transform.position).normalized;
+        Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction); // yönlü rotation
+
+        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, rotation);
+
+        Rigidbody2D rbProjectile = projectile.GetComponent<Rigidbody2D>();
+        if (rbProjectile != null)
         {
-            Vector2 direction = (player.position - transform.position).normalized;
-            Quaternion rotation = transform.rotation;
-
-            GameObject projectile = Instantiate(projectilePrefab, transform.position, rotation);
-
-            
-
-
-            Rigidbody2D rbProjectile = projectile.GetComponent<Rigidbody2D>();
-            if (rbProjectile != null)
-            {
-                rbProjectile.linearVelocity = direction * 10f;
-            }
-
-            a++;
-            StartCoroutine(ResetShoot());
+            rbProjectile.linearVelocity = direction * 10f;
         }
+
+        StartCoroutine(ResetShoot());
     }
 
     IEnumerator ResetShoot()
     {
         yield return new WaitForSeconds(shootInterval);
-        a = 0;
+        canShoot = true;
     }
 
     IEnumerator StopEscape()
     {
-        yield return new WaitForSeconds(1f); // 1 saniye kaçtıktan sonra normal moda dön
+        yield return new WaitForSeconds(1f); // 1 saniye kaçtıktan sonra normale dön
         isEscaping = false;
     }
 }

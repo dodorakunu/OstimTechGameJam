@@ -22,12 +22,11 @@ public class KusmukHasarSistemi : MonoBehaviour
     {
         if (collision.CompareTag("Player") && playerHealth != null)
         {
-            Debug.Log("posion");
-            playerHealth.posioned = true;
-            if (playerHealth.posioned)
+            if(playerHealth.posioned == true)
             {
-                playerHealth.currentTime -= 10f;
+                playerHealth.damageMult *= 2f;
             }
+            playerHealth.posioned = true;
         }
     }
 }

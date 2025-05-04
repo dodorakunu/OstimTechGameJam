@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public GameObject collier;
 
     private float nextAllowedTime = 0f;
-    public float cooldownTime = 2f;//sonraki U harfine basýþ
+    public float cooldownTime = 0.4f;//sonraki U harfine basýþ
     public GameObject capsule;
     public Animator anim;
     void Start()

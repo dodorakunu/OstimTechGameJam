@@ -7,7 +7,6 @@ public class DefaultZombie : MonoBehaviour
     public float zombieSpeed;
     public float turnSpeed = 180f; // Saniyede dönebileceði maksimum derece
     public ZombiesHealthSystem ZombiesHealthSystem;
-
     public GameObject player;
 
     private Transform playerTransform;
@@ -17,7 +16,7 @@ public class DefaultZombie : MonoBehaviour
     void Start()
     {
         ZombiesHealthSystem = GetComponent<ZombiesHealthSystem>();
-        ZombiesHealthSystem.Zombiehealth = 100f;
+        ZombiesHealthSystem.Zombiehealth = 300f;
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
@@ -57,9 +56,19 @@ public class DefaultZombie : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            
             PlayerHealthSystem playerHealthSystem = collision.gameObject.GetComponent<PlayerHealthSystem>();
+            
+            if (playerHealthSystem.damageMult >= 10 && playerHealthSystem.posioned == true)
+            {
+                playerHealthSystem.SubtractTime(zombieDamage);
+            }
+            else if(playerHealthSystem.damageMult < 10 && playerHealthSystem.posioned == true)
+            {
+                playerHealthSystem.damageMult *= 1.2f;
+            }
             playerHealthSystem.posioned = true;
-            playerHealthSystem.SubtractTime(zombieDamage);
+
         }
     }
 }

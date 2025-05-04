@@ -1,22 +1,22 @@
 using UnityEngine;
-
-public class RunnerZombieController : MonoBehaviour
+using TMPro;
+public class GiantZombieSystem : MonoBehaviour
 {
-    public float zombieDamage = 15f;
+    public float zombieDamage = 50f;
     public float zombieSpeed;
-    public float turnSpeed = 180f; 
+    public float turnSpeed = 180f; // Saniyede dönebileceði maksimum derece
     public ZombiesHealthSystem ZombiesHealthSystem;
-
     public GameObject player;
 
     private Transform playerTransform;
 
     public PlayerController playerController;
-  
+
+
     void Start()
     {
         ZombiesHealthSystem = GetComponent<ZombiesHealthSystem>();
-        ZombiesHealthSystem.Zombiehealth = 200f; //zombie caný
+        ZombiesHealthSystem.Zombiehealth = 1000f;
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
@@ -24,7 +24,11 @@ public class RunnerZombieController : MonoBehaviour
             player = playerObj;
             playerTransform = playerObj.transform;
             playerController = player.GetComponent<PlayerController>();
-            zombieSpeed = 7.5f; //zombie hýzý
+            zombieSpeed = 1.5f;
+        }
+        else
+        {
+            Debug.LogError("Player tag'ine sahip obje bulunamadý!");
         }
     }
 
@@ -48,21 +52,24 @@ public class RunnerZombieController : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
         }
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+
             PlayerHealthSystem playerHealthSystem = collision.gameObject.GetComponent<PlayerHealthSystem>();
-          
+
             if (playerHealthSystem.damageMult >= 10 && playerHealthSystem.posioned == true)
             {
                 playerHealthSystem.SubtractTime(zombieDamage);
             }
             else if (playerHealthSystem.damageMult < 10 && playerHealthSystem.posioned == true)
             {
-                playerHealthSystem.damageMult *= 1.5f;
+                playerHealthSystem.SubtractTime(zombieDamage);
             }
             playerHealthSystem.posioned = true;
+
         }
     }
 }

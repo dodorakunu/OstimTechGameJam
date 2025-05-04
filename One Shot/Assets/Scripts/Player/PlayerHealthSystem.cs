@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerHealthSystem : MonoBehaviour
 {
-    public float maxTime = 120f; // Oyuncunun baþlangýç süresi (saniye cinsinden)
+    public float maxTime = 600f; // Oyuncunun baþlangýç süresi (saniye cinsinden)
     public float currentTime;
     public bool isDead = false;
     public float damageMult = 1;
@@ -29,7 +29,7 @@ public class PlayerHealthSystem : MonoBehaviour
         {
             Die();
         }
-        
+
         if(a == 0)
         {
             if (Input.GetKeyDown(KeyCode.Space)) //potion sistemi için tuþ 
@@ -37,6 +37,7 @@ public class PlayerHealthSystem : MonoBehaviour
                 a++;
                 posioned = false;
                 currentTime = maxTime + (damageMult * 2);
+                damageMult = 1;
             }
         }
     }
