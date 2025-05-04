@@ -9,7 +9,7 @@ public class PlayerHealthSystem : MonoBehaviour
     public bool posioned = false;
     public float stamina = 100f;
     public GameObject DeadScene;
-
+    int a = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,11 +29,15 @@ public class PlayerHealthSystem : MonoBehaviour
         {
             Die();
         }
-
-        if (Input.GetKeyDown(KeyCode.Space)) //potion sistemi için tuþ 
+        
+        if(a == 0)
         {
-            posioned = false;
-            currentTime = maxTime + (damageMult * 2);
+            if (Input.GetKeyDown(KeyCode.Space)) //potion sistemi için tuþ 
+            {
+                a++;
+                posioned = false;
+                currentTime = maxTime + (damageMult * 2);
+            }
         }
     }
 

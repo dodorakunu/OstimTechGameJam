@@ -4,7 +4,7 @@ public class CanvasController : MonoBehaviour
 {
     public TMP_Text infoText;
     public TMP_Text stamina;
-    public PlayerHealthSystem playerHealthSystem;
+    private PlayerHealthSystem playerHealthSystem;
     public GameObject player;
     void Start()
     {

@@ -9,10 +9,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movement;
     public PlayerHealthSystem playerHealthSystem;
-
     public GameObject collier;
-    
 
+    private float nextAllowedTime = 0f;
+    public float cooldownTime = 2f;//sonraki U harfine basýþ
     public GameObject capsule;
     public Animator anim;
     void Start()
@@ -32,13 +32,18 @@ public class PlayerController : MonoBehaviour
     {
 
         RotateToMouse();
-
-        if (Input.GetKeyDown(KeyCode.U)) // Sað týk
+        if(playerHealthSystem.stamina >= 20)
         {
-            anim.SetTrigger("attack");
-            collier.SetActive(true);
-            StartCoroutine(wait());
+            if (Input.GetButtonDown("Fire1") && Time.time >= nextAllowedTime) // Sað týk
+            {
+                nextAllowedTime = Time.time + cooldownTime;
+                playerHealthSystem.stamina -= 20f;
+                anim.SetTrigger("attack");
+                collier.SetActive(true);
+                StartCoroutine(wait());
+            }
         }
+       
        
 
         movement.x = Input.GetAxisRaw("Horizontal");
