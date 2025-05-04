@@ -668,6 +668,7 @@ MonoBehaviour:
   moveSpeed: 5
   sprintMultiplier: 2
   playerHealthSystem: {fileID: 0}
+  collier: {fileID: 0}
   capsule: {fileID: 1620509998}
   anim: {fileID: 0}
 --- !u!61 &949242455
